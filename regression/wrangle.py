@@ -76,5 +76,3 @@ def wrangle_telco():
     df_telco = df_telco.dropna()
     return df_telco
 
-def wrangle_telco():
-    
