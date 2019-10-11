@@ -18,27 +18,69 @@ import numpy as np
 from wrangle import wrangle_telco
 import env 
 from sklearn.model_selection import train_test_split
-
-df = wrangle_telco()
-# df.info()
-# df.describe()
-
-# print(train.shape)
-# print(test.shape)
-
 from sklearn.preprocessing import StandardScaler, QuantileTransformer, PowerTransformer, RobustScaler, MinMaxScaler
 
+df = wrangle_telco()
 X = df.drop(columns=['customer_id', 'total_charges'])
 y = pd.DataFrame(df['total_charges'])
-# type(y)
 
+### Splitting entire df ###
 
-def split_my_data(X, y):
+def split_my_data_whole(df, train_pct=.80, random_state=123):
+    train, test = train_test_split(df, train_size=train_pct, random_state=random_state)
+    return train, test
+
+# Scaling Methods #
+# Workflow:
+#1. Create object and 
+#2. Fit object
+#3. Transform train and test
+
+def standard_scalar(train, test):
+    scaler = StandardScaler(copy=True, with_mean=True, with_std=True).fit(train)
+    train_scaled = pd.DataFrame(scaler.transform(train), columns=train.columns.values).set_index([train.index.values])
+    test_scaled = pd.DataFrame(scaler.transform(test), columns=test.columns.values).set_index([test.index.values])
+    return scaler, train_scaler, test_scaler
+
+def scale_inverse(scaler, train_scaler, test_scaler):
+    train_unscaled = pd.DataFrame(scaler.inverse_transform(train_scaled), columns=train_scaled.columns.values).set_index([train.index.values])
+    test_unscaled = pd.DataFrame(scaler.inverse_transform(test_scaled), columns=test_scaled.columns.values).set_index([test.index.values])
+    return scaler, train, test
+
+def uniform_scaler(train, test):
+    scaler = QuantileTransformer(n_quantiles=100, output_distribution='uniform', random_state=123, copy=True).fit(train)
+    train_scaled = pd.DataFrame(scaler.transform(train), columns=train.columns.values).set_index([train.index.values])
+    test_scaled = pd.DataFrame(scaler.transform(test), columns=test.columns.values).set_index([test.index.values])
+    return scaler, train_scaled, test_scaled
+
+def gaussian_scaler(train, test):
+    scaler = PowerTransformer(method='yeo-johnson', standardize=False, copy=True).fit(train)
+    train_scaled = pd.DataFrame(scaler.transform(train), columns=train.columns.values).set_index([train.index.values])
+    test_scaled = pd.DataFrame(scaler.transform(test), columns=test.columns.values).set_index([test.index.values])
+    return scaler, train_scaled, test_scaled
+
+def min_max_scaler():
+    scaler = MinMaxScaler(copy=True, feature_range=(0,1)).fit(train)
+    train_scaled = pd.DataFrame(scaler.transform(train), columns=train.columns.values).set_index([train.index.values])
+    test_scaled = pd.DataFrame(scaler.transform(test), columns=test.columns.values).set_index([test.index.values])
+    return scaler, train_scaled, test_scaled
+
+def iqr_robust_scaler(train, test):
+    scaler = RobustScaler(quantile_range=(25.0,75.0), copy=True, with_centering=True, with_scaling=True).fit(train)
+    train_scaled = pd.DataFrame(scaler.transform(train), columns=train.columns.values).set_index([train.index.values])
+    test_scaled = pd.DataFrame(scaler.transform(test), columns=test.columns.values).set_index([test.index.values])
+    return scaler, train_scaled, test_scaled
+
+### Splitting the df into 4 df's ###
+
+'''
+def split_my_data(X, y, train_pct=.80):
     X = df.drop(columns=['customer_id', 'total_charges'])
     y = pd.DataFrame(df['total_charges'])
     X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=.8, random_state=123)
     return X_train, X_test, y_train, y_test
 
+# Types of Scaling #
 
 def standard_scaler(X_train, X_test, y_train, y_test):
     scalerX = StandardScaler().fit(X_train)
@@ -91,4 +133,5 @@ def iqr_robust_scaler(X_train, X_test, y_train, y_test):
     test_iqr_X = pd.DataFrame(scalerX.transform(X_test), columns=X_test.columns.values).set_index([X_test.index.values])
     test_iqr_y = pd.DataFrame(scalery.transform(y_test), columns=y_test.columns.values).set_index([y_test.index.values])
     return scalerX, scalery, train_iqr_X, train_iqr_y, test_iqr_X, test_iqr_y
+'''
 
