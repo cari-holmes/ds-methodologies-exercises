@@ -20,11 +20,13 @@ import env
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, QuantileTransformer, PowerTransformer, RobustScaler, MinMaxScaler
 
-df = wrangle_telco()
+df = wrangle_telco() # add this into split function
 X = df.drop(columns=['customer_id', 'total_charges'])
 y = pd.DataFrame(df['total_charges'])
 
 ### Splitting entire df ###
+
+## add in split into scaler functions to then just input df into function ##
 
 def split_my_data_whole(df, train_pct=.80, random_state=123):
     train, test = train_test_split(df, train_pct, random_state)
