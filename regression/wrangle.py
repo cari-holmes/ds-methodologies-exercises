@@ -8,7 +8,6 @@ I need to do this within an average of $5.00 per customer.'''
 import warnings 
 warnings.filterwarnings('ignore')
 
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -24,12 +23,12 @@ FROM customers
 WHERE contract_type_id = 3;
 '''
 
-df_telco = pd.read_sql(query, get_db_url('telco_churn'))
-df_telco.head() 
-df_telco.shape
-df_telco.describe()
-df_telco.info()
-df_telco.total_charges.value_counts(sort=True)
+df = pd.read_sql(query, get_db_url('telco_churn'))
+df.head()
+df.shape
+df.describe()
+df.info()
+df.total_charges.value_counts(sort=True)
 
 #1. Acquire customer_id, monthly_charges, tenure, and total_charges from telco_churn database for all customers with a 2 year contract.
 
@@ -42,24 +41,18 @@ df_telco.total_charges.value_counts(sort=True)
 
 #2. Walk through the steps above using your new dataframe. You may handle the missing values however you feel is appropriate.
 
-df_telco.replace(r'^\s*$', np.nan, regex=True, inplace=True)
-df_telco['total_charges'] = df_telco['total_charges'].astype(float)
-print(df_telco.isnull().sum())
-print(df_telco.columns[df_telco.isnull().any()])
-df_telco = df_telco.dropna()
-df_telco.dtypes 
+df.replace(r'^\s*$', np.nan, regex=True, inplace=True)
+df['total_charges'] = df['total_charges'].astype(float)
+print(df.isnull().sum())
+print(df.columns[df.isnull().any()])
+df = df.dropna()
+df.dtypes 
+
+df[['total_charges']] = df[['total_charges']].astype(float)
 
 #3. End with a python file wrangle.py that contains the function, wrangle_telco(), that will acquire the data and return a dataframe cleaned with no missing values.
 
 def wrangle_telco():
-    import warnings 
-    warnings.filterwarnings('ignore')
-
-    import pandas as pd
-    import numpy as np
-    import matplotlib.pyplot as plt
-    import seaborn as sns
-    from env import user, host, password
 
     def get_db_url(db):
         return f'mysql+pymysql://{user}:{password}@{host}/{db}'
@@ -69,10 +62,35 @@ def wrangle_telco():
     FROM customers 
     WHERE contract_type_id = 3;
     '''
-    df_telco = pd.read_sql(query, get_db_url('telco_churn'))
+    df = pd.read_sql(query, get_db_url('telco_churn'))
 
-    df_telco.replace(r'^\s*$', np.nan, regex=True, inplace=True)
-    df_telco['total_charges'] = df_telco['total_charges'].astype(float)
-    df_telco = df_telco.dropna()
-    return df_telco
+    df.replace(r'^\s*$', np.nan, regex=True, inplace=True)
+    df['total_charges'] = df['total_charges'].astype(float)
+    df = df.dropna()
+    return df
+
+
+# def get_db_url(db):
+#     return f'mysql+pymysql://{user}:{password}@{host}/{db}'
+
+# def get_data_from_mysql():
+#     query='''
+#     SELECT customer_id, monthly_charges, tenure, total_charges 
+#     FROM customers 
+#     WHERE contract_type_id = 3;
+#     '''
+#     df = pd.read_sql(query, get_db_url('telco_churn'))
+#     return df
+
+# def clean_my_data(df):
+#     df = df.replace(r'^\s*$', np.nan, regex=True, inplace=True)
+#     df.total_charges = df.total_charges.str.strip().replace('', np.nan).astype(float)
+#     df = df.dropna()
+#     df = df.drop(columns=['customer_id'])
+#     return df
+
+# def wrangle_telco():
+#     df = get_data_from_mysql()
+#     df = clean_my_data(df)
+#     return df
 
