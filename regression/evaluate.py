@@ -28,9 +28,10 @@ df.describe()
 x = df.total_bill
 y = df.tip
 
-regr = ols('y ~ x', data=df).fit()
+regr = ols('tip ~ total_bill', data=df).fit()
 df['yhat'] = regr.predict(pd.DataFrame(x))
 regr.summary()
+df.head()
 
 # Write a function, plot_residuals(x, y, dataframe) that takes the feature, the target, and the dataframe as input and returns a residual plot. (hint: seaborn has an easy way to do this!)
 
@@ -47,34 +48,40 @@ def regression_errors(y, yhat):
     RMSE = sqrt(MSE)
     ESS = sum((df.yhat - y.mean())**2)
     TSS = SSE + ESS
-    return MSE, SSE, RMSE, ESS, TSS
-
+    return  SSE, ESS, TSS, MSE, RMSE  
+SSE
 regression_errors(y, df.yhat)
 
 # Write a function, baseline_mean_errors(y), that takes in your target, y, computes the SSE, MSE & RMSE when yhat is equal to the mean of all y, and returns the error values (SSE, MSE, and RMSE).
 ## fix this baseline
 
 def baseline_mean_errors(y):
-    yhat = y.mean()
-    df['residual'] = df['yhat'] - y
-    df['residual_2'] = df['residual']**2
-    SSE = sum(df['residual_2'])
-    MSE = SSE/len(df)
-    RMSE = sqrt(MSE)
-    return SSE, MSE, RMSE
+    # df_base = df
+    # df_base.head()
+    # df_base['yhat'] = (y).mean()
+    # df_base['residual'] = df_base['yhat'] - y
+    # df_base['residual_2'] = df_base['residual']**2
+    MSE_fnc = mean_squared_error(y, df.yhat)
+    SSE_fnc = MSE_fnc*len(df)
+    RMSE_fnc = sqrt(MSE_fnc)
+    return SSE_fnc, MSE_fnc, RMSE_fnc
 
 baseline_mean_errors(y)
 
 # Write a function, better_than_baseline(SSE), that returns true if your model performs better than the baseline, otherwise false.
 
-def better_than_baseline(SSE):
-    return MSE < mse_base
+def better_than_baseline(SSE, SSE_fnc):
+    SSE = ((df.yhat - y) ** 2).sum()
+    SSE_fnc = ((y.mean() - y)** 2).sum()
+    return SSE < SSE_fnc
 
+better_than_baseline(SSE, SSE_fnc)
 
 # Write a function, model_significance(ols_model), that takes the ols model as input and returns the amount of variance explained in your model, and the value telling you whether the correlation between the model and the tip value are statistically significant.
 
 def model_significance(ols_model):
+    r2 = ols_model.rsquared
+    pval = ols_model.f_pvalue
+    return r2, pval
     
-
-
-
+model_significance(ols_model)
