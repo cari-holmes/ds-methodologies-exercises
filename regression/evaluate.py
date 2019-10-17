@@ -49,7 +49,7 @@ def regression_errors(y, yhat):
     ESS = sum((df.yhat - y.mean())**2)
     TSS = SSE + ESS
     return  SSE, ESS, TSS, MSE, RMSE  
-SSE
+
 regression_errors(y, df.yhat)
 
 # Write a function, baseline_mean_errors(y), that takes in your target, y, computes the SSE, MSE & RMSE when yhat is equal to the mean of all y, and returns the error values (SSE, MSE, and RMSE).
