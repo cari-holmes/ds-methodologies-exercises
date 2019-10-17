@@ -28,22 +28,21 @@ y = pd.DataFrame(df['total_charges'])
 
 ## add in split into scaler functions to then just input df into function ##
 
-def split_my_data_whole(df, train_pct=.80, random_state=123):
-    train, test = train_test_split(df, train_pct, random_state)
+def split_my_data(df, train_pct=.80, random_state=123):
+    train, test = train_test_split(df, train_size=train_pct, random_state=random_state)
     return train, test
 
 # Scaling Methods #
 # Workflow:
-#1. Create object and 
+#1. Create object  
 #2. Fit object
 #3. Transform train and test
-
 
 def standard_scaler(train, test):
     scaler = StandardScaler(copy=True, with_mean=True, with_std=True).fit(train)
     train_scaled = pd.DataFrame(scaler.transform(train), columns=train.columns.values).set_index([train.index.values])
     test_scaled = pd.DataFrame(scaler.transform(test), columns=test.columns.values).set_index([test.index.values])
-    return scaler, train_scaler, test_scaler
+    return scaler, train_scaled, test_scaled
 
 ### fix this function!
 def scale_inverse(scaler, train_scaler, test_scaler):
