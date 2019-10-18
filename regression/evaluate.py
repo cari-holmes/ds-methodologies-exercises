@@ -56,28 +56,29 @@ regression_errors(y, df.yhat)
 ## fix this baseline
 
 def baseline_mean_errors(y):
-    # df_base = df
-    # df_base.head()
-    # df_base['yhat'] = (y).mean()
-    # df_base['residual'] = df_base['yhat'] - y
-    # df_base['residual_2'] = df_base['residual']**2
-    MSE_fnc = mean_squared_error(y, df.yhat)
-    SSE_fnc = MSE_fnc*len(df)
-    RMSE_fnc = sqrt(MSE_fnc)
-    return SSE_fnc, MSE_fnc, RMSE_fnc
+    SSE_base = ((y.mean() - y)** 2).sum()
+    MSE_base = SSE_base / len(y)
+    RMSE_base = sqrt(MSE_base)
+    return SSE_base, MSE_base, RMSE_base
 
 baseline_mean_errors(y)
 
+
 # Write a function, better_than_baseline(SSE), that returns true if your model performs better than the baseline, otherwise false.
 
-def better_than_baseline(SSE, SSE_fnc):
-    SSE = ((df.yhat - y) ** 2).sum()
-    SSE_fnc = ((y.mean() - y)** 2).sum()
-    return SSE < SSE_fnc
+SSE = ((df.yhat - y) ** 2).sum()
+SSE_base = ((y.mean() - y)** 2).sum()
 
-better_than_baseline(SSE, SSE_fnc)
+def better_than_baseline(SSE, SSE_base):
+    SSE = ((df.yhat - y) ** 2).sum()
+    SSE_base = ((y.mean() - y)** 2).sum()
+    return SSE < SSE_base
+
+better_than_baseline(SSE, SSE_base)
 
 # Write a function, model_significance(ols_model), that takes the ols model as input and returns the amount of variance explained in your model, and the value telling you whether the correlation between the model and the tip value are statistically significant.
+
+ols_model = ols('y ~ x', data=df).fit()
 
 def model_significance(ols_model):
     r2 = ols_model.rsquared
