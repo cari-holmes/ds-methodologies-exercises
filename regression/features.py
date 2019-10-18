@@ -121,17 +121,18 @@ def optimal_n_features(x_train, y_train):
 optimal_n_features(x_train, y_train)
 
 
+
 def top_features(x_train, y_train, number_of_features):
-    cols = list(X_train.columns)
+    cols = list(x_train.columns)
     model = LinearRegression()
     rfe = RFE(model, number_of_features)
-    X_rfe = rfe.fit_transform(X_train,y_train)  
-    model.fit(X_rfe,y_train)
+    x_rfe = rfe.fit_transform(x_train,y_train)  
+    model.fit(x_rfe,y_train)
     temp = pd.Series(rfe.support_,index = cols)
     selected_features_rfe = temp[temp==True].index
     
     return selected_features_rfe
 
-top_features(x_train, y_train, number_of_features)
+top_features(x_train, y_train, 2)
 
-def list_top_features()
+#def list_top_features()
