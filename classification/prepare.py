@@ -22,7 +22,7 @@ def prep_titanic():
     df = acquire.get_titanic_data()
     df.embark_town.fillna('Other', inplace=True)
     df.embarked.fillna('Unknown', inplace=True)
-    df = df.drop(columns=['deck'], inplace=True)
+    df.drop(columns=['deck'], inplace=True)
     
     encoder = LabelEncoder()
     df.embarked = encoder.fit_transform(df.embarked)
@@ -33,8 +33,5 @@ def prep_titanic():
     scaler = MinMaxScaler()
     df.fare = scaler.fit_transform(df[['fare']])
     
-    return df_titanic
+    return df
 
-df = prep_titanic()
-
-### fix titanic function ###
