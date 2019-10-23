@@ -37,4 +37,4 @@ def prep_titanic():
 
 df = prep_titanic()
 
-### fix titanic function 
+### fix titanic function ###
