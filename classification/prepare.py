@@ -35,3 +35,6 @@ def prep_titanic():
     
     return df
 
+### split my data before scaling, adjust these functions
+
+
