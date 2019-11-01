@@ -122,4 +122,3 @@ def get_zillow_data():
 
 df = get_zillow_data()
 
-df.head()
