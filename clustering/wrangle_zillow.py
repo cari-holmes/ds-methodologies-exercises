@@ -4,7 +4,7 @@ import prepare
 # Wrangle prepared zillow data
 
 def wrangle_zillow_data():
-    df = acquire.acquire_zillow()
+    df = acquire.get_zillow_data()
     df = prepare.zillow_single_unit(df)
     df = prepare.remove_columns(df,['calculatedbathnbr','finishedsquarefeet12',\
         'fullbathcnt','propertycountylandusecode','unitcnt','structuretaxvaluedollarcnt',\
