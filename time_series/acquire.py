@@ -26,7 +26,7 @@ def get_store_data_from_api():
     data = response.json()
     return pd.DataFrame(data['payload']['stores'])
 
-get_store_data_from_api()
+#get_store_data_from_api()
 
 def get_item_data_from_api():
     url = API_BASE + '/items'
@@ -44,7 +44,7 @@ def get_item_data_from_api():
 
     return pd.DataFrame(stores)
 
-get_item_data_from_api()
+#get_item_data_from_api()
 
 def get_sale_data_from_api():
     url = API_BASE + '/sales'
@@ -62,7 +62,7 @@ def get_sale_data_from_api():
 
     return pd.DataFrame(stores)
 
-get_sale_data_from_api()
+#get_sale_data_from_api()
 
 def get_store_data(use_cache=True):
     if use_cache and path.exists('stores.csv'):
@@ -71,7 +71,7 @@ def get_store_data(use_cache=True):
     df.to_csv('stores.csv', index=False)
     return df
 
-get_store_data(use_cache=True)
+#get_store_data(use_cache=True)
 
 def get_item_data(use_cache=True):
     if use_cache and path.exists('items.csv'):
@@ -80,7 +80,7 @@ def get_item_data(use_cache=True):
     df.to_csv('items.csv', index=False)
     return df
 
-get_item_data(use_cache=True)
+#get_item_data(use_cache=True)
 
 def get_sale_data(use_cache=True):
     if use_cache and path.exists('sales.csv'):
@@ -89,6 +89,8 @@ def get_sale_data(use_cache=True):
     df.to_csv('sales.csv', index=False)
     return df
 
+#get_sale_data(use_cache=True)
+
 def get_opsd_data(use_cache=True):
     if use_cache and path.exists('opsd.csv'):
         return pd.read_csv('opsd.csv')
@@ -96,13 +98,18 @@ def get_opsd_data(use_cache=True):
     df.to_csv('opsd.csv', index=False)
     return df
 
+#get_opsd_data(use_cache=True)
 
-def get_all_data():
+
+def get_all_data(use_cache=True):
     sales = get_sale_data()
     items = get_item_data()
     stores = get_store_data()
 
     sales = sales.rename(columns={'item': 'item_id', 'store': 'store_id'})
 
-    return sales.merge(items on=item_id).merge(stores, on='store_id')
+    return sales.merge(items, on='item_id').merge(stores, on='store_id')
 
+#df = get_all_data(use_cache=True)
+
+#df.head()
