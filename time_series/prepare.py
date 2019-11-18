@@ -14,17 +14,12 @@ def prepare_sale():
     return df
 
 
-def sale_distributions():
-    df = acquire.get_all_data(use_cache=True)
-    df[['sale_amount']].plot()
-    df[['item_price']].plot()
-    df[['sale_date']].plot()
-
-
-
-df[['sale_amount']].plot()
-df[['item_price']].plot()
-df[['sale_date']].plot()
+# def sale_distributions(df):
+#     df = acquire.get_all_data(use_cache=True)
+#     df = df[['sale_amount']].plot()
+#     df = df[['item_price']].plot()
+#     df = df[['sale_date']].plot()
+#     return df
 
 
 def prepare_ops():
@@ -36,11 +31,10 @@ def prepare_ops():
     return ops
 
 
-def ops_distributions():
-    ops = acquire.get_opsd_data(use_cache=True)
-    ops['Date'] = pd.to_datetime(ops['Date'])
-    ops[['Consumption']].plot()
-    ops[['Wind']].plot()
-    ops[['Solar']].plot()
-    ops[['Wind+Solar']].plot()
-
+# def ops_distributions(df:
+#     ops = acquire.get_opsd_data(use_cache=True)
+#     ops = ops[['Consumption']].plot()
+#     ops = ops[['Wind']].plot()
+#     ops = ops[['Solar']].plot()
+#     ops = ops[['Wind+Solar']].plot()
+#     return ops
