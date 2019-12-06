@@ -4,16 +4,6 @@ import os
 from bs4 import BeautifulSoup
 
 
-def get_blog_post():
-    filename = './codeup_blog_posts.csv'
-    if os.path.exists(filename):
-        return pd.read_csv(filename)
-    else:
-        return make_new_request()
-
-get_blog_post()
-
-
 def make_dictionary_from_article(url):
     headers = {'User-Agent':'Codeup Data Science Student'}
     response = get(url, headers=headers)
@@ -24,12 +14,6 @@ def make_dictionary_from_article(url):
     return {'title': title,
             'body': body
     }
-
-    # alternative return statement
-    # output = {}
-    # output['title] = title
-    # output['body] == body
-    # return output
 
 
 def make_new_request():
@@ -50,4 +34,26 @@ def make_new_request():
     df.to_csv('./codeup_blog_posts.csv')
 
     return output
+
+
+def get_blog_post():
+    filename = './codeup_blog_posts.csv'
+    if os.path.exists(filename):
+        return pd.read_csv(filename)
+    else:
+        return make_new_request()
+
+get_blog_post()
+
+
+
+
+    # alternative return statement
+    # output = {}
+    # output['title] = title
+    # output['body] == body
+    # return output
+
+
+
 
