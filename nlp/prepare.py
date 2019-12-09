@@ -53,6 +53,10 @@ def prep_article(df):
     return df
 # have to drop unnamed column separately
 
-def prepare_article_data():
+def prepare_blog_data():
     df = acquire.get_blog_post()
+    return prep_article(df)
+
+def prepare_article_data():
+    df = acquire.get_news_articles()
     return prep_article(df)
